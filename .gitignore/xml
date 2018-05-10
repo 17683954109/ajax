@@ -1,0 +1,51 @@
+
+
+在xml诞生之前，web页面的更新必须重载整个页面，xml诞生之后，客户端可以通过http请求来更新局部数据，请求是通过JavaScript完成的
+
+xml就是描述数据的文本，仅仅是文本，没有其他作用，它的写法和html类似，不过标签没有固定要求，编写者可以自定标签
+
+一个简单的xml：
+
+<?xml version="1.0" encoding="UTF-8"?>  //xml的描述
+<body>                //父元素
+<title>这是一个demo</title>   //子元素
+<message>异步的JS和XML</message>   //子元素
+<msg>javascript</msg>   //子元素
+</body>       //父元素的闭合标签
+
+///需要注意的是，xml的标签必须闭合，以免出现不兼容
+
+目前主流的浏览器都支持xml，并有专门的xml解释器，除开ie老版本，其他浏览器发送xml请求都是通过：XMLHttpRequest()，
+而ie有专门的请求函数，所以在请求时，必须对ie浏览器做出兼容：
+
+var xmlhttp;
+	if (window.XMLHttpRequest) {
+		xmlhttp=new XMLHttpRequest();
+	}else{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+  
+  //设置请求的方式和内容，是否异步
+  
+  xmlhttp.open('GET','demo.xml',true);
+  
+ 注：这仅仅是设置了请求的详情，并未发送请求
+ 
+ //发送请求
+ 
+ xmlhttp.send();
+ 
+ //请求成功的回调函数
+ 
+ xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)   //readyState即为请求已发送，status即为响应是否正确
+    {
+    document.getElementById("here").innerHTML=xmlhttp.responseText;
+    }
+	}
+  
+  //以上的方法是异步的，如果不想异步处理，把
+  xmlhttp.open('GET','demo.xml',true);中的true改为false
+  
+  
+  
